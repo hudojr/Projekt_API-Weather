@@ -2,10 +2,6 @@ import { Component } from '@angular/core';
 import { WeatherService } from '../api/weather.service';
 
 import { LoadingController } from '@ionic/angular';
-import { error } from 'protractor';
-
-
-
 
 @Component({
   selector: 'app-tab1',
@@ -27,9 +23,9 @@ export class Tab1Page {
   condition:String
 
   temp_C: String
-  temperature:String
-  humidity_string
-  wind
+  temperature: String
+  humidity_string: String
+  wind: String
   percento: String
   ciarka: String
 
@@ -39,16 +35,32 @@ export class Tab1Page {
   
 
   currentDisplayIndex: number = -1;
+  refresh_place: String
 
-  constructor(private weatherService: WeatherService, public loadingController: LoadingController) {
+  constructor(private weatherService: WeatherService, public loadingController: LoadingController) {}
+
+  doRefresh(event) {
+    console.log('Begin refresh operation');
+    alert("Reseting weather.")
+    this.refresh_place = this.place;
+    this.weatherService.getWeather(this.refresh_place).subscribe(data =>{
+      this.succes(data);
+    }, error => {
+      this.failed(error);
+    })
+    setTimeout(() => {
+    console.log('Weather refreshed.');
+      event.target.complete();
+    }, 1000);
+    
   }
+
   async presentLoading() {
-    await this.dismiss();
     this.loadingDialog = await this.loadingController.create(
       {
         message: 'Loading weather.',
       });
-    await this.loadingDialog.present();
+      return await this.loadingDialog.present();
   }
 
   async dismiss() {
@@ -58,69 +70,19 @@ export class Tab1Page {
   }
   
 
-  public btnGetWeatherClicked(): void {
+  public btnGetWeather(): void {
 
     if (this.place != null) {
       this.presentLoading();
       this.weatherService.getWeather(this.place).subscribe((data) => {
-        console.log(data);
-        this.temp_C = " °C";
-        this.percento = " %";
-        this.km_h = " km/h";
-        this.ciarka = ", ";
-        this.temperature = "Temperature: ";
-        this.humidity_string = "Humidity: ";
-        this.wind = "Wind :";
-        this.city = data['location']['name'];
-        this.region = data['location']['region'];
-        this.country = data['location']['country'];
-        this.date = data['location']['localtime'];
-        this.temp = data['current']['temp_c'];
-        this.wind_km = data['current']['wind_kph'];
-        this.humidity = data['current']['humidity'];
-        this.urlIMG = data['current']['condition']['icon'];
-        this.condition = data['current']['condition']['text'];
-        this.dismiss();
+        this.succes(data);
       },        error => {
-        console.log(error);
-        this.temp_C = "";
-        this.percento = "";
-        this.km_h = "";
-        this.ciarka = " ";
-        this.temperature = "";
-        this.humidity_string = "";
-        this.wind = "";
-        this.city = error['status'];
-        this.country = "";
-        this.date = "";
-        this.temp = "";
-        this.wind_km = "";
-        this.humidity = "";
-        this.condition = "";
-        this.region = error['statusText'];
-        this.urlIMG = "assets/icon/400_badrequest.png";
-        this.dismiss();
+        this.failed(error);
     }
-      
       );
     }
     else{
-      this.temp_C = "";
-      this.percento = "";
-      this.km_h = "";
-      this.ciarka = " ";
-      this.temperature = "";
-      this.humidity_string = "";
-      this.wind = "";
-      this.city = "No place to found.";
-      this.country = "";
-      this.date = "";
-      this.temp = "";
-      this.wind_km = "";
-      this.humidity = "";
-      this.region = "";
-      this.urlIMG = "";
-      this.condition = "";
+      this.noPlace();
     }
   }
 
@@ -133,4 +95,62 @@ export class Tab1Page {
     this.currentDisplayIndex = index; //Set the current index to the item index passed from template. If you click on item number 3, only 3rd item details will be visible
   }
 
+succes(data){
+  this.temp_C = " °C";
+  this.percento = " %";
+  this.km_h = " km/h";
+  this.ciarka = ", ";
+  this.temperature = "Temperature: ";
+  this.humidity_string = "Humidity: ";
+  this.wind = "Wind :";
+  this.city = data['location']['name'];
+  this.region = data['location']['region'];
+  this.country = data['location']['country'];
+  this.date = data['location']['localtime'];
+  this.temp = data['current']['temp_c'];
+  this.wind_km = data['current']['wind_kph'];
+  this.humidity = data['current']['humidity'];
+  this.urlIMG = data['current']['condition']['icon'];
+  this.condition = data['current']['condition']['text'];
+  this.dismiss();
+}
+
+failed(data){
+  this.temp_C = "";
+  this.percento = "";
+  this.km_h = "";
+  this.ciarka = " ";
+  this.temperature = "";
+  this.humidity_string = "";
+  this.wind = "";
+  this.city = data['status'];
+  this.country = "";
+  this.date = "";
+  this.temp = "";
+  this.wind_km = "";
+  this.humidity = "";
+  this.condition = "";
+  this.region = data['statusText'];
+  this.urlIMG = "assets/icon/400_badrequest.png";
+  this.dismiss();
+}
+
+noPlace(){
+  this.temp_C = "";
+  this.percento = "";
+  this.km_h = "";
+  this.ciarka = " ";
+  this.temperature = "";
+  this.humidity_string = "";
+  this.wind = "";
+  this.city = "No place to found.";
+  this.country = "";
+  this.date = "";
+  this.temp = "";
+  this.wind_km = "";
+  this.humidity = "";
+  this.region = "";
+  this.urlIMG = "";
+  this.condition = "";
+}
 }

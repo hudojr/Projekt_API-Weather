@@ -13,5 +13,63 @@
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <ion-item>
+    <ion-label position="floating"><ion-icon name="search-outline"></ion-icon></ion-label>
+    <ion-input [(ngModel)]="place" inputmode="text" type="text" placeholder="Enter a location for forecast."></ion-input>
+  </ion-item>
+
+  <ion-list>
+    <ion-item>
+      <ion-label>Days</ion-label>
+        <ion-select [(ngModel)]="days" name="days" placeholder="Select number">
+          <ion-select-option value="1">1</ion-select-option>
+          <ion-select-option value="2">2</ion-select-option>
+          <ion-select-option value="3">3</ion-select-option>
+          <!-- <ion-select-option value="4">4</ion-select-option>
+          <ion-select-option value="5">5</ion-select-option>
+          <ion-select-option value="6">6</ion-select-option>
+          <ion-select-option value="7">7</ion-select-option>
+          <ion-select-option value="8">8</ion-select-option>
+          <ion-select-option value="9">9</ion-select-option>
+          <ion-select-option value="10">10</ion-select-option> -->
+        </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <div id="button">
+     <ion-button (click)="btnGetForecast()" shape="round" >Get Forecast</ion-button>
+  </div>
+
+  <div id="header" >
+    {{city}}{{ciarka}}{{region}}{{ciarka}}{{country}}
+  </div>
+
+  <ion-slides pager="false" [options]="slideOpts">
+    <ion-slide *ngFor="let day of forecastdays">
+        <!-- <p>{{day.date}}</p> -->
+    <div id="parent">
+    <div id="img">
+      <p id="datum">
+       {{day.date}}
+    <img src="{{ day.day.condition.icon }}" alt=""> 
+      </p>
+      </div>
+    <div id="space"></div>
+    <div id="text">
+      <p>Sunrise: {{day.astro.sunrise}}</p>
+      <p>Sunset: {{day.astro.sunset}}</p>
+      <p>Average temperature: {{day.day.avgtemp_c}} °C</p>
+      <p>Average humidity: {{day.day.avghumidity}} %</p>
+      <p>Chance of rain: {{day.day.daily_chance_of_rain}} %</p>
+    </div> 
+      </div>
+   </ion-slide>
+</ion-slides>
+
+
+
+
+
+
+
 </ion-content>

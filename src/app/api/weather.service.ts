@@ -19,6 +19,10 @@ export class WeatherService {
     return this.http.get('http://api.weatherapi.com/v1/current.json?key='+this.API_key+'&q='+place+'&aqi=no');
   }
 
+  public getForecast(place: String, days: number)
+  {
+    return this.http.get('http://api.weatherapi.com/v1/forecast.json?key='+this.API_key+'&q='+place+'&aqi=no&days='+days);
+  }
 
 
 }
