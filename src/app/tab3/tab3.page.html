@@ -13,4 +13,29 @@
     </ion-toolbar>
   </ion-header>
 
+  <ion-list>
+    <ion-item>
+      <ion-label position="floating">Enter Name</ion-label>
+      <ion-input type="text" [(ngModel)]="name" placeholder="Enter name" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Country</ion-label>
+      <ion-input type="text" [(ngModel)]="country" placeholder="Enter country" required></ion-input>
+    </ion-item>
+
+    <div class="ion-float-right">
+      <ion-button (click)="setStorage()">Set storage data</ion-button>
+      <ion-button color="tertiary" (click)="getStorage()">Get storage data</ion-button>
+      <ion-button color="tertiary" (click)="clearStorage()">Clear storage</ion-button>
+    </div>
+  </ion-list>
+
+  <ion-item>
+    Get LocalStorage string name : {{ storageName }}
+  </ion-item>
+  <ion-item>
+    Get LocalStorage JSON person :  {{ person?.name }} : {{ person?.country }}
+  </ion-item>
+
 </ion-content>
