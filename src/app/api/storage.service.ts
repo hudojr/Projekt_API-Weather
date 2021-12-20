@@ -5,7 +5,7 @@ import { Storage } from '@capacitor/storage';
 @Injectable({
     providedIn: 'root'
 })
-export class HistoryService {
+export class StorageService {
 
     constructor() { }
 

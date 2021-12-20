@@ -21,13 +21,14 @@
     </ion-item>
   
     <div id="button">
-    <ion-button (click)="btnGetWeather()" (click)="hide(i)" shape="round" >Get Weather</ion-button>
+    <ion-button (click)="btnGetWeather()" shape="round" >Get Weather</ion-button>
   </div>
   <div id="button"> 
     <ion-button shape="round" >Use Current Location</ion-button>
   </div>
   
-    <ion-card *ngIf="currentDisplayIndex==i">
+    <ion-card *ngIf="city != null"> 
+      <!-- *ngIf="currentDisplayIndex==i" -->
       <ion-card-header>
         <ion-card-subtitle>{{ date }}</ion-card-subtitle>
         <ion-card-title>{{ city }}{{ ciarka }}{{ region }}{{ ciarka }}{{ country }}</ion-card-title>
@@ -48,19 +49,14 @@
           <div id="space"></div>
           <div id="text">
             <p>{{ condition }}</p></div>
-          <ion-fab vertical="bottom" horizontal="end">
-            <ion-fab-button>
+          <ion-fab vertical="bottom" horizontal="end" *ngIf="temperature != ''">
+            <ion-fab-button (click)="setStorage()">
               <ion-icon name="add"></ion-icon>
             </ion-fab-button>
           </ion-fab>
         </div>
       </ion-card-content>
     </ion-card>
-
-    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-      <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
-
 
   </ion-content>
   
