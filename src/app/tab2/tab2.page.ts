@@ -52,11 +52,10 @@ export class Tab2Page {
         this.country = data['location']['country'];
         this.ciarka = ", "
         this.forecastdays = data['forecast']['forecastday'];
-        console.log(this.forecastdays);
-        
         this.dismiss();
       },(error) =>{
         console.log(error);
+        
         this.dismiss();
       }
       )

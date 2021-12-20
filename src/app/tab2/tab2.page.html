@@ -49,11 +49,11 @@
         <!-- <p>{{day.date}}</p> -->
     <div id="parent">
     <div id="img">
-      <p id="datum">
-       {{day.date}}
+      <div id="datum">
+       <p>{{day.date}}</p>
     <img src="{{ day.day.condition.icon }}" alt=""> 
-    {{day.day.condition.text}}
-      </p>
+      <p>{{day.day.condition.text}}</p>
+      </div>
       </div>
     <div id="space"></div>
     <div id="text">
@@ -62,7 +62,11 @@
       <p>Average temperature: {{day.day.avgtemp_c}} °C</p>
       <p>Average humidity: {{day.day.avghumidity}} %</p>
       <p>Chance of rain: {{day.day.daily_chance_of_rain}} %</p>
-    </div> 
+      <p>Chance of snow: {{day.day.daily_chance_of_snow}} %</p>        
+      <p>Max temperature: {{day.day.maxtemp_c}} °C</p>
+      <p>Min temperature: {{day.day.mintemp_c}} °C</p>
+      <p>Max wind speed: {{day.day.maxwind_kph}} km/h</p>
+    </div>
       </div>
    </ion-slide>
 </ion-slides>
