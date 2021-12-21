@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@capacitor/storage';
 
+import { WeatherRecord } from '../models/weather-record.model';
+import { ForecastRecord } from '../models/forecast-record.model';
 
 @Injectable({
     providedIn: 'root'
@@ -8,6 +10,21 @@ import { Storage } from '@capacitor/storage';
 export class StorageService {
 
     constructor() { }
+
+    weatherHistory: WeatherRecord[] = []
+    forecastHistory: ForecastRecord[] = []
+
+    public getWeatherRecord() {
+        console.log(this.weatherHistory);
+        return this.weatherHistory;
+        
+    }
+
+    public getForecastRecord() {
+        console.log(this.forecastHistory);
+        
+        return this.forecastHistory;
+    }
 
     async setString(key: string, value: string) {
         await Storage.set({ key, value });

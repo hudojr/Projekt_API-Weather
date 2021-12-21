@@ -21,40 +21,38 @@
 
   <ion-card> 
     <ion-card-header>
-      <ion-card-subtitle>{{ date }}</ion-card-subtitle>
-      <ion-card-title>{{ city }}{{ ciarka }}{{ region }}{{ ciarka }}{{ country }}</ion-card-title>
+      <ion-card-subtitle></ion-card-subtitle>
+      <ion-card-title></ion-card-title>
     </ion-card-header>
   
     <ion-card-content>
-      <div id="parent">
-        <div id="img"><img src="{{ urlIMG }}" alt=""></div>
-        <div id="space"></div>
-        <div id="text">
-          <p>{{temperature}} {{ temp }} {{ temp_C }} </p>
-          <p>{{humidity_string}} {{ humidity }} {{ percento }}</p>
-          <p>{{wind}} {{ wind_km }} {{ km_h }}</p>
-        </div>
-      </div>
-      <div id="parent">
-        <div id="img"></div>
-        <div id="space"></div>
-        <div id="text">
-          <p>{{ condition }}</p></div>
-      </div>
+
     </ion-card-content>
   </ion-card>
 
 
   <ion-item>
     <ion-label class="ion-text-center">
-      Current weather history
+      Search history of current weather
     </ion-label>
   </ion-item>
+  <ion-card> 
+    <ion-card-content>
+      <p *ngFor="let record of weatherHistory | slice:0:4; let i = index">{{ i + 1}}. City: {{ record.city }} Date: {{ record.date }}</p>
+    </ion-card-content>
+  </ion-card>
+
 
   <ion-item>
     <ion-label class="ion-text-center">
-      Forecast history
+      Search history of forecast
     </ion-label>
   </ion-item>
+  <ion-card> 
+    <ion-card-content>
+      <p *ngFor="let record of forecastHistory | slice:0:4; let i = index">{{ i + 1}}. City: {{ record.city }} Days: {{ record.days }}</p>
+    </ion-card-content>
+  </ion-card>
+
 
 </ion-content>

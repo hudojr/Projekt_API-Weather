@@ -2,7 +2,11 @@ import { Component } from '@angular/core';
 import { WeatherService } from '../api/weather.service';
 
 import { LoadingController } from '@ionic/angular';
+
 import { StorageService } from '../api/storage.service';
+import { WeatherRecord } from '../models/weather-record.model';
+
+import { ToastController } from '@ionic/angular';
 
 
 @Component({
@@ -32,17 +36,22 @@ export class Tab1Page {
   percento: String
   ciarka: String
 
-
   loadingDialog: any
-  errors: any
+ 
 
-  currentDisplayIndex: number = -1;
 
-  search = { mesto: '', datum: '' }
-  lastSearch: any[]
+  constructor(private weatherService: WeatherService, public loadingController: LoadingController,
+    private storage: StorageService, public toastController: ToastController) {
+    this.getFavorite();
+  }
 
-  constructor(private weatherService: WeatherService, public loadingController: LoadingController, private storage: StorageService) {
-    this.getStorage();
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Your favorite location have been saved.',
+      duration: 2000
+    });
+    toast.present();
   }
 
   //funkcia buttonu na subscribe dat
@@ -50,8 +59,11 @@ export class Tab1Page {
     //ak nie je place null tak sa zavola funkcia loading dialogu, request na pocasie
     this.presentLoading();
     this.weatherService.getWeather(this.place).subscribe((data) => {
-      this.succes(data);//ak request je v poriadku predaju sa data vo funkcii succes
-      this.dismiss(); 
+      //ak request je v poriadku predaju sa data vo funkcii succes
+      this.succes(data);
+      let record = new WeatherRecord(this.city, this.date);
+      this.saveHistory(record);
+      this.dismiss();
     }, error => {
       alert("Bad input!")
       this.dismiss();
@@ -61,15 +73,21 @@ export class Tab1Page {
 
   }
 
-  setStorage() {
-    this.storage.setObject('current', {
+  async saveHistory(record: WeatherRecord) {
+    this.storage.weatherHistory.unshift(record);
+    await this.storage.setObject('current_history', this.storage.weatherHistory);
+  }
+
+  setFavorite() {
+    this.storage.setObject('favorite_current', {
       city: this.city,
       date: this.date
     });
+    this.presentToast();
   }
 
-  getStorage() {
-    this.storage.getObject('current').then((data: any) => {
+  getFavorite() {
+    this.storage.getObject('favorite_current').then((data: any) => {
       this.place = data['city'];
     });
   }
@@ -105,7 +123,6 @@ export class Tab1Page {
     this.humidity = data['current']['humidity'];
     this.urlIMG = data['current']['condition']['icon'];
     this.condition = data['current']['condition']['text'];
-
   }
 
 }
