@@ -13,17 +13,21 @@ export class StorageService {
 
     weatherHistory: WeatherRecord[] = []
     forecastHistory: ForecastRecord[] = []
+    favoriteRecord: WeatherRecord
+    favoriteForecast: ForecastRecord
+    favoriteCity: any
+
 
     public getWeatherRecord() {
-        console.log(this.weatherHistory);
         return this.weatherHistory;
-        
     }
 
     public getForecastRecord() {
-        console.log(this.forecastHistory);
-        
         return this.forecastHistory;
+    }
+
+    public getFavoriteRecord() {
+        return this.favoriteCity;
     }
 
     async setString(key: string, value: string) {

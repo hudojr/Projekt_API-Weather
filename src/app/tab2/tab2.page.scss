@@ -1,6 +1,13 @@
-#button{
+#container{
+  text-align: center;
+}
+ion-button {
+  display: inline-block;
+}
+  
+  #favorite{
     text-align: center;
-    padding-top: 10px;
+    padding-left: 20px;
   }
 
   #parent {

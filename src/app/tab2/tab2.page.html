@@ -29,17 +29,13 @@
     </ion-item>
   </ion-list>
 
-  <div id="button">
-     <ion-button (click)="btnGetForecast()" shape="round" >Get Forecast</ion-button>
-  </div>
 
-  <div id="header" >
+  <div id="header">
     {{city}}{{ciarka}}{{region}}{{ciarka}}{{country}}
   </div>
 
   <ion-slides pager="false" [options]="slideOpts">
     <ion-slide *ngFor="let day of forecastdays">
-        <!-- <p>{{day.date}}</p> -->
     <div id="parent">
     <div id="img">
       <div id="datum">
@@ -63,6 +59,16 @@
       </div>
    </ion-slide>
 </ion-slides>
+
+
+<div id="container">
+  <ion-button shape="round" (click)="btnGetForecast()" >Get Forecast</ion-button>
+  <ion-button id="favorite" shape="round" *ngIf="city != null" (click)="setFavorite()">
+     <ion-icon name="star-outline"></ion-icon></ion-button>
+    </div>
+
+
+
 
 
 

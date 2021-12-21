@@ -37,11 +37,15 @@ export class Tab1Page {
   ciarka: String
 
   loadingDialog: any
- 
+
 
 
   constructor(private weatherService: WeatherService, public loadingController: LoadingController,
     private storage: StorageService, public toastController: ToastController) {
+    this.getFavorite();
+  }
+
+  ionViewWillEnter() {
     this.getFavorite();
   }
 
@@ -73,23 +77,27 @@ export class Tab1Page {
 
   }
 
-  async saveHistory(record: WeatherRecord) {
+  saveHistory(record: WeatherRecord) {
     this.storage.weatherHistory.unshift(record);
-    await this.storage.setObject('current_history', this.storage.weatherHistory);
+    this.storage.setObject('current_history', this.storage.weatherHistory);
   }
 
+
   setFavorite() {
-    this.storage.setObject('favorite_current', {
-      city: this.city,
-      date: this.date
-    });
+    let favorite = new WeatherRecord(this.city, this.date)
+    this.storage.favoriteRecord = favorite;
+    this.storage.favoriteCity = this.city;
+    this.storage.setObject('favorite_current', this.storage.favoriteRecord);
     this.presentToast();
   }
 
   getFavorite() {
     this.storage.getObject('favorite_current').then((data: any) => {
-      this.place = data['city'];
+      if (data != null) {
+        this.place = data['city'];
+      }
     });
+    this.storage.favoriteCity = this.place;
   }
 
   async presentLoading() {

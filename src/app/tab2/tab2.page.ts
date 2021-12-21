@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 
 import { WeatherService } from '../api/weather.service';
 import { LoadingController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
+
 import { StorageService } from '../api/storage.service';
 
 import { ForecastRecord } from '../models/forecast-record.model';
@@ -25,22 +27,32 @@ export class Tab2Page {
   loadingDialog: any
 
 
-  constructor(private weatherService: WeatherService, public loadingController: LoadingController, private storage: StorageService) {
+  constructor(private weatherService: WeatherService, public loadingController: LoadingController,
+     private storage: StorageService, public toastController: ToastController) {
     this.getFavorite();
   }
 
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Your favorite forecast have been saved.',
+      duration: 2000
+    });
+    toast.present();
+  }
 
   setFavorite() {
-    this.storage.setObject('favorite_forecast', {
-      city: this.city,
-      days: this.days
-    });
+    let favorite = new ForecastRecord(this.city, this.days)
+    this.storage.favoriteForecast = favorite;
+    this.storage.setObject('favorite_forecast', this.storage.favoriteForecast);
+    this.presentToast();
   }
 
   getFavorite() {
     this.storage.getObject('favorite_forecast').then((data: any) => {
-      this.place = data['city'];
-      this.days = data['days'];
+      if (data != null) {
+        this.place = data['city'];
+        this.days = data['days'];
+      }
     });
   }
 
@@ -59,9 +71,9 @@ export class Tab2Page {
     }
   }
 
-  async saveHistory(record: ForecastRecord) {
+  saveHistory(record: ForecastRecord) {
     this.storage.forecastHistory.unshift(record);
-    await this.storage.setObject('forecast_history', this.storage.forecastHistory);
+    this.storage.setObject('forecast_history', this.storage.forecastHistory);
   }
 
   public btnGetForecast(): void {
@@ -74,7 +86,7 @@ export class Tab2Page {
         this.country = data['location']['country'];
         this.ciarka = ", "
         this.forecastdays = data['forecast']['forecastday'];
-        let record = new ForecastRecord(this.city,this.days);
+        let record = new ForecastRecord(this.city, this.days);
         this.saveHistory(record);
         this.dismiss();
       }, (error) => {
