@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
-
 import { WeatherService } from '../api/weather.service';
-import { LoadingController } from '@ionic/angular';
-import { ToastController } from '@ionic/angular';
-
-import { StorageService } from '../api/storage.service';
-
+import { StorageService } from '../services/storage.service';
+import { FunctionsService } from '../services/functions.service';
 import { ForecastRecord } from '../models/forecast-record.model';
 
 @Component({
@@ -27,26 +23,44 @@ export class Tab2Page {
   loadingDialog: any
 
 
-  constructor(private weatherService: WeatherService, public loadingController: LoadingController,
-     private storage: StorageService, public toastController: ToastController) {
+  constructor(private weatherService: WeatherService, private storage: StorageService, 
+    private functions: FunctionsService) {
     this.getFavorite();
   }
 
-  async presentToast() {
-    const toast = await this.toastController.create({
-      message: 'Your favorite forecast have been saved.',
-      duration: 2000
-    });
-    toast.present();
+  //funkcia pre button
+  public btnGetForecast(): void {
+    //ak nie je pole(place) pre hladanie prazdne a zaroven je zadany pocet dni tak sa vykona
+    if (this.place != null && this.days != null) {
+      this.functions.presentLoadingForecast(); //loadingDialog
+      //zavola getForecast a subscribe dat z APi
+      this.weatherService.getForecast(this.place, this.days).subscribe((data) => {
+        //vypis dat
+        this.city = data['location']['name'];
+        this.region = data['location']['region'];
+        this.country = data['location']['country'];
+        this.ciarka = ", "
+        this.forecastdays = data['forecast']['forecastday'];
+        //ulozenie city zo subscribe a vstupu days do record-u
+        let record = new ForecastRecord(this.city, this.days);
+        //funkcia pre ulozenie pola record do localStorage
+        this.saveHistory(record);
+        this.functions.dismiss();
+      }, (error) => {
+        this.functions.dismiss();
+      }
+      )
+    }
   }
-
+  
+  //ulozenie oblubeneho mesta a dni, ktore sa budu vzdy ukazovat ako predvolene
   setFavorite() {
-    let favorite = new ForecastRecord(this.city, this.days)
-    this.storage.favoriteForecast = favorite;
-    this.storage.setObject('favorite_forecast', this.storage.favoriteForecast);
-    this.presentToast();
+    let favorite = new ForecastRecord(this.city, this.days) //zapis do pola
+    this.storage.favoriteForecast = favorite; //zapis do storage.favoriteForecast
+    this.storage.setObject('favorite_forecast', this.storage.favoriteForecast); //ulozenie do LocalStorage
+    this.functions.presentToastForecast(); //zavolanie toast
   }
-
+  //funkcia pre getFavorite, ktora sluzi na volanie oblubenych nastaveni ako place a pocet dni
   getFavorite() {
     this.storage.getObject('favorite_forecast').then((data: any) => {
       if (data != null) {
@@ -56,44 +70,11 @@ export class Tab2Page {
     });
   }
 
-  async presentLoading() {
-    await this.dismiss();
-    this.loadingDialog = await this.loadingController.create(
-      {
-        message: 'Loading forecast.',
-      });
-    await this.loadingDialog.present();
-  }
-
-  async dismiss() {
-    while (await this.loadingController.getTop() !== undefined) {
-      await this.loadingController.dismiss();
-    }
-  }
-
+  //funkcia pre ulozenie do pola a nasledna aktualizacia localStorage
   saveHistory(record: ForecastRecord) {
     this.storage.forecastHistory.unshift(record);
     this.storage.setObject('forecast_history', this.storage.forecastHistory);
   }
 
-  public btnGetForecast(): void {
-
-    if (this.place != null && this.days != null) {
-      this.presentLoading();
-      this.weatherService.getForecast(this.place, this.days).subscribe((data) => {
-        this.city = data['location']['name'];
-        this.region = data['location']['region'];
-        this.country = data['location']['country'];
-        this.ciarka = ", "
-        this.forecastdays = data['forecast']['forecastday'];
-        let record = new ForecastRecord(this.city, this.days);
-        this.saveHistory(record);
-        this.dismiss();
-      }, (error) => {
-        this.dismiss();
-      }
-      )
-    }
-  }
 
 }

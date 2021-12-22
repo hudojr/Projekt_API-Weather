@@ -30,14 +30,6 @@ export class StorageService {
         return this.favoriteCity;
     }
 
-    async setString(key: string, value: string) {
-        await Storage.set({ key, value });
-    }
-
-    async getString(key: string): Promise<{ value: any }> {
-        return (await Storage.get({ key }));
-    }
-
     async setObject(key: string, value: any) {
         await Storage.set({ key, value: JSON.stringify(value) });
     }
@@ -46,7 +38,6 @@ export class StorageService {
         const ret = await Storage.get({ key });
         return JSON.parse(ret.value);
     }
-
 
     async removeItem(key: string) {
         await Storage.remove({ key });

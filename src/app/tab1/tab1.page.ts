@@ -1,13 +1,8 @@
 import { Component } from '@angular/core';
 import { WeatherService } from '../api/weather.service';
-
-import { LoadingController } from '@ionic/angular';
-
-import { StorageService } from '../api/storage.service';
+import { StorageService } from '../services/storage.service';
 import { WeatherRecord } from '../models/weather-record.model';
-
-import { ToastController } from '@ionic/angular';
-
+import { FunctionsService } from '../services/functions.service';
 
 @Component({
   selector: 'app-tab1',
@@ -15,7 +10,6 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
-
 
   place: string
   date: string
@@ -28,7 +22,6 @@ export class Tab1Page {
   wind_km: string
   km_h: string
   condition: string
-
   temp_C: String
   temperature: String
   humidity_string: String
@@ -36,84 +29,63 @@ export class Tab1Page {
   percento: String
   ciarka: String
 
-  loadingDialog: any
 
-
-
-  constructor(private weatherService: WeatherService, public loadingController: LoadingController,
-    private storage: StorageService, public toastController: ToastController) {
-    this.getFavorite();
+  constructor(private weatherService: WeatherService, private storage: StorageService, 
+    private functions: FunctionsService) {
+    this.getFavorite(); //pri nacitani Tab1 sa spusti funkcia getFavorite();
   }
 
+  //po otvoreni Tab1 sa spusti funkcia getFavorite();
   ionViewWillEnter() {
     this.getFavorite();
   }
 
-
-  async presentToast() {
-    const toast = await this.toastController.create({
-      message: 'Your favorite location have been saved.',
-      duration: 2000
-    });
-    toast.present();
-  }
-
-  //funkcia buttonu na subscribe dat
+  //funkcia buttonu 
   public btnGetWeather(): void {
-    //ak nie je place null tak sa zavola funkcia loading dialogu, request na pocasie
-    this.presentLoading();
+    //nacitanie LoadingDialogu
+    this.functions.presentLoadingWeather()
+    //subscribe dat z requestu, ktory urobila API
     this.weatherService.getWeather(this.place).subscribe((data) => {
-      //ak request je v poriadku predaju sa data vo funkcii succes
+      //ak request je v poriadku predaju sa data vo funkcii succes(vypis dat)
       this.succes(data);
+      //urobi sa zapis do pola WeatherRecord
       let record = new WeatherRecord(this.city, this.date);
+      //urobi sa zapis record-u do pola LocalStorage
       this.saveHistory(record);
-      this.dismiss();
+      this.functions.dismiss();
     }, error => {
-      alert("Bad input!")
-      this.dismiss();
+      //ak je error nic sa nevypisuje okrem toho, ze sa zrusi Loading dialog
+      this.functions.dismiss();
     }
     );
-    this.dismiss();
-
+    this.functions.dismiss();
   }
 
+  //funkcia ktora prida zapis do pola na 1. miesto a toto pole aktualizuje v LocalStorage 
   saveHistory(record: WeatherRecord) {
     this.storage.weatherHistory.unshift(record);
     this.storage.setObject('current_history', this.storage.weatherHistory);
   }
 
-
+  //funkcia pre zapis oblubenej polohy
   setFavorite() {
-    let favorite = new WeatherRecord(this.city, this.date)
-    this.storage.favoriteRecord = favorite;
-    this.storage.favoriteCity = this.city;
-    this.storage.setObject('favorite_current', this.storage.favoriteRecord);
-    this.presentToast();
+    let favorite = new WeatherRecord(this.city, this.date) //zapis v podobe class WeatherRecord
+    this.storage.favoriteRecord = favorite; //preda hodnotu do pola storage.favoriteRecord ktora sa nachadza v StorageService
+    this.storage.setObject('favorite_current', this.storage.favoriteRecord); //ulozi object do LocalStorage
+    this.getFavorite(); //zavola sa getFavorite() pre aktualizaciu oblubeneho mesta v Tab3
+    this.functions.presentToastWeather(); //vypis toastu
   }
 
+  //funkcia pre vypis oblubenej polohy do storage.favoriteCity
   getFavorite() {
     this.storage.getObject('favorite_current').then((data: any) => {
       if (data != null) {
-        this.place = data['city'];
+        this.storage.favoriteCity = data['city'];
       }
     });
-    this.storage.favoriteCity = this.place;
   }
 
-  async presentLoading() {
-    this.loadingDialog = await this.loadingController.create(
-      {
-        message: 'Loading weather.',
-      });
-    return await this.loadingDialog.present();
-  }
-
-  async dismiss() {
-    while (await this.loadingController.getTop() !== undefined) {
-      await this.loadingController.dismiss();
-    }
-  }
-
+  //funkcia pre vypis dat do .html
   succes(data) {
     this.temp_C = " °C";
     this.percento = " %";
@@ -132,5 +104,6 @@ export class Tab1Page {
     this.urlIMG = data['current']['condition']['icon'];
     this.condition = data['current']['condition']['text'];
   }
+
 
 }

@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { WeatherRecord } from '../models/weather-record.model';
 import { ForecastRecord } from '../models/forecast-record.model';
 
-import { StorageService } from '../api/storage.service';
+import { StorageService } from '../services/storage.service';
 import { WeatherService } from '../api/weather.service';
 
 

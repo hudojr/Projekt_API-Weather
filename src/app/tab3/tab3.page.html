@@ -52,7 +52,7 @@
   </ion-item>
   <ion-card> 
     <ion-card-content>
-      <p *ngFor="let record of weatherHistory | slice:0:4; let i = index">{{ i + 1}}. City: {{ record.city }} Date: {{ record.date }}</p>
+      <p *ngFor="let record of weatherHistory | slice:0:5; let i = index">{{ i + 1}}. City: {{ record.city }} Date: {{ record.date }}</p>
     </ion-card-content>
   </ion-card>
 
@@ -64,7 +64,7 @@
   </ion-item>
   <ion-card> 
     <ion-card-content>
-      <p *ngFor="let record of forecastHistory | slice:0:4; let i = index">{{ i + 1}}. City: {{ record.city }} Days: {{ record.days }}</p>
+      <p *ngFor="let record of forecastHistory | slice:0:5; let i = index">{{ i + 1}}. City: {{ record.city }} Days: {{ record.days }}</p>
     </ion-card-content>
   </ion-card>
 
