@@ -37,15 +37,24 @@ export class Tab3Page {
   percento: String
   ciarka: String
 
-  constructor(private storage: StorageService, private weatherService: WeatherService) {}
+  constructor(private storage: StorageService, private weatherService: WeatherService) {
+    this.getFavorite();
+  }
 
   ionViewWillEnter() {
     this.weatherHistory = this.storage.getWeatherRecord();
     this.forecastHistory = this.storage.getForecastRecord();
     this.fav = this.storage.getFavoriteRecord();
-    if(this.fav != null){
-     this.loadFavoriteWeather();  
+    if (this.fav != null) {
+      this.loadFavoriteWeather();
     }
+  }
+  getFavorite() {
+    this.storage.getObject('favorite_current').then((data: any) => {
+      if (data != null) {
+        this.storage.favoriteCity = data['city'];
+      }
+    });
   }
 
   loadFavoriteWeather() {

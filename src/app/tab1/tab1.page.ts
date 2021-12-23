@@ -59,7 +59,7 @@ export class Tab1Page {
     }
     );
     this.functions.dismiss();
-  }
+  } 
 
   //funkcia ktora prida zapis do pola na 1. miesto a toto pole aktualizuje v LocalStorage 
   saveHistory(record: WeatherRecord) {

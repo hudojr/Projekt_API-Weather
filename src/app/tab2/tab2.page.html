@@ -14,66 +14,100 @@
   </ion-header>
 
   <ion-item>
-    <ion-label position="floating"><ion-icon name="search-outline"></ion-icon></ion-label>
-    <ion-input [(ngModel)]="place" inputmode="text" type="text" placeholder="Enter a location for forecast."></ion-input>
+    <ion-label position="floating">
+      <ion-icon name="search-outline"></ion-icon>
+    </ion-label>
+    <ion-input [(ngModel)]="place" inputmode="text" type="text" placeholder="Enter a location for forecast.">
+    </ion-input>
   </ion-item>
 
   <ion-list>
     <ion-item>
       <ion-label>Days</ion-label>
-        <ion-select [(ngModel)]="days" name="days" placeholder="Select number">
-          <ion-select-option value="1">1</ion-select-option>
-          <ion-select-option value="2">2</ion-select-option>
-          <ion-select-option value="3">3</ion-select-option>
-        </ion-select>
+      <ion-select [(ngModel)]="days" name="days" placeholder="Select number">
+        <ion-select-option value="1">1</ion-select-option>
+        <ion-select-option value="2">2</ion-select-option>
+        <ion-select-option value="3">3</ion-select-option>
+      </ion-select>
     </ion-item>
   </ion-list>
+
+
+  <ion-item>
+    <ion-label>Temperature by hours</ion-label>
+    <ion-checkbox [(ngModel)]="details" color="danger"></ion-checkbox>
+  </ion-item>
 
 
   <div id="header">
     {{city}}{{ciarka}}{{region}}{{ciarka}}{{country}}
   </div>
 
-  <ion-slides pager="false" [options]="slideOpts">
+  <ion-slides pager="false" [options]="slideOpts" *ngIf="details != true">
     <ion-slide *ngFor="let day of forecastdays">
-    <div id="parent">
-    <div id="img">
-      <div id="datum">
-       <p>{{day.date}}</p>
-    <img src="{{ day.day.condition.icon }}" alt=""> 
-      <p>{{day.day.condition.text}}</p>
+      <div id="parent">
+        <div id="img">
+          <div id="datum">
+            <p>{{day.date}}</p>
+            <img src="{{ day.day.condition.icon }}" alt="">
+            <p>{{day.day.condition.text}}</p>
+          </div>
+        </div>
+        <div id="space"></div>
+        <div id="text">
+          <p>Sunrise: {{day.astro.sunrise}}</p>
+          <p>Sunset: {{day.astro.sunset}}</p>
+          <p>Average temperature: {{day.day.avgtemp_c}} °C</p>
+          <p>Average humidity: {{day.day.avghumidity}} %</p>
+          <p>Chance of rain: {{day.day.daily_chance_of_rain}} %</p>
+          <p>Chance of snow: {{day.day.daily_chance_of_snow}} %</p>
+          <p>Max temperature: {{day.day.maxtemp_c}} °C</p>
+          <p>Min temperature: {{day.day.mintemp_c}} °C</p>
+          <p>Max wind speed: {{day.day.maxwind_kph}} km/h</p>
+        </div>
       </div>
+    </ion-slide>
+  </ion-slides>
+
+  <ion-slides pager="false" [options]="slideOpts" *ngIf="details == true">
+    <ion-slide *ngFor="let hour of hours">
+      <div id="parent">
+        <div id="text">
+          <p>{{hour[0].time}}: {{hour[0].temp_c}} °C</p>
+          <p>{{hour[1].time}}: {{hour[1].temp_c}} °C</p>
+          <p>{{hour[2].time}}: {{hour[2].temp_c}} °C</p>
+          <p>{{hour[3].time}}: {{hour[3].temp_c}} °C</p>
+          <p>{{hour[4].time}}: {{hour[4].temp_c}} °C</p>
+          <p>{{hour[5].time}}: {{hour[5].temp_c}} °C</p>
+          <p>{{hour[6].time}}: {{hour[6].temp_c}} °C</p>
+          <p>{{hour[7].time}}: {{hour[7].temp_c}} °C</p>
+          <p>{{hour[8].time}}: {{hour[8].temp_c}} °C</p>
+          <p>{{hour[9].time}}: {{hour[9].temp_c}} °C</p>
+          <p>{{hour[10].time}}: {{hour[10].temp_c}} °C</p>
+          <p>{{hour[11].time}}: {{hour[11].temp_c}} °C</p>
+          <p>{{hour[12].time}}: {{hour[12].temp_c}} °C</p>
+          <p>{{hour[13].time}}: {{hour[13].temp_c}} °C</p>
+          <p>{{hour[14].time}}: {{hour[14].temp_c}} °C</p>
+          <p>{{hour[15].time}}: {{hour[15].temp_c}} °C</p>
+          <p>{{hour[16].time}}: {{hour[16].temp_c}} °C</p>
+          <p>{{hour[17].time}}: {{hour[17].temp_c}} °C</p>
+          <p>{{hour[18].time}}: {{hour[18].temp_c}} °C</p>
+          <p>{{hour[19].time}}: {{hour[19].temp_c}} °C</p>
+          <p>{{hour[20].time}}: {{hour[20].temp_c}} °C</p>
+          <p>{{hour[21].time}}: {{hour[21].temp_c}} °C</p>
+          <p>{{hour[22].time}}: {{hour[22].temp_c}} °C</p>
+          <p>{{hour[23].time}}: {{hour[23].temp_c}} °C</p>
+        </div>
       </div>
-    <div id="space"></div>
-    <div id="text">
-      <p>Sunrise: {{day.astro.sunrise}}</p>
-      <p>Sunset: {{day.astro.sunset}}</p>
-      <p>Average temperature: {{day.day.avgtemp_c}} °C</p>
-      <p>Average humidity: {{day.day.avghumidity}} %</p>
-      <p>Chance of rain: {{day.day.daily_chance_of_rain}} %</p>
-      <p>Chance of snow: {{day.day.daily_chance_of_snow}} %</p>        
-      <p>Max temperature: {{day.day.maxtemp_c}} °C</p>
-      <p>Min temperature: {{day.day.mintemp_c}} °C</p>
-      <p>Max wind speed: {{day.day.maxwind_kph}} km/h</p>
-    </div>
-      </div>
-   </ion-slide>
-</ion-slides>
+    </ion-slide>
+  </ion-slides>
 
 
-<div id="container">
-  <ion-button shape="round" (click)="btnGetForecast()" >Get Forecast</ion-button>
-  <ion-button id="favorite" shape="round" *ngIf="city != null" (click)="setFavorite()">
-     <ion-icon name="star-outline"></ion-icon></ion-button>
-    </div>
-
-
-
-
-
-
-
-
-
+  <div id="container">
+    <ion-button shape="round" (click)="btnGetForecast()">Get Forecast</ion-button>
+    <ion-button id="favorite" shape="round" *ngIf="city != null" (click)="setFavorite()">
+      <ion-icon name="star-outline"></ion-icon>
+    </ion-button>
+  </div>
 
 </ion-content>

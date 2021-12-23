@@ -1,59 +1,58 @@
- <ion-header [translucent]="true">
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="ion-text-center">
+      Current Weather
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title class="ion-text-center">
-        Current Weather
-      </ion-title>
+      <ion-title class="ion-text-center" size="large">Current Weather</ion-title>
     </ion-toolbar>
   </ion-header>
-  
-  <ion-content [fullscreen]="true">
-    <ion-header collapse="condense">
-      <ion-toolbar>
-        <ion-title class="ion-text-center" size="large">Current Weather</ion-title>
-      </ion-toolbar>
-    </ion-header>
-  
-  
-    <!-- <ion-searchbar placeholder="Place"></ion-searchbar> -->
-    <ion-item>
-      <ion-label position="floating"><ion-icon name="search-outline"></ion-icon></ion-label>
-      <ion-input [(ngModel)]="place" inputmode="text" type="text" placeholder="Enter a location.."></ion-input>
-    </ion-item>
-  
-    <div id="button">
-    <ion-button (click)="btnGetWeather()" shape="round" >Get Weather</ion-button>
-  </div>
-  
-    <ion-card *ngIf="city != null"> 
-      <!-- *ngIf="currentDisplayIndex==i" -->
-      <ion-card-header>
-        <ion-card-subtitle>{{ date }}</ion-card-subtitle>
-        <ion-card-title>{{ city }}{{ ciarka }}{{ region }}{{ ciarka }}{{ country }}</ion-card-title>
-      </ion-card-header>
-    
-      <ion-card-content>
-        <div id="parent">
-          <div id="img"><img src="{{ urlIMG }}" alt=""></div>
-          <div id="space"></div>
-          <div id="text">
-            <p>{{temperature}} {{ temp }} {{ temp_C }} </p>
-            <p>{{humidity_string}} {{ humidity }} {{ percento }}</p>
-            <p>{{wind}} {{ wind_km }} {{ km_h }}</p>
-          </div>
-        </div>
-        <div id="parent">
-          <div id="img"></div>
-          <div id="space"></div>
-          <div id="text">
-            <p>{{ condition }}</p></div>
-          <ion-fab vertical="bottom" horizontal="end" *ngIf="temperature != ''">
-            <ion-fab-button (click)="setFavorite()">
-              <ion-icon name="star-outline"></ion-icon>
-            </ion-fab-button>
-          </ion-fab>
-        </div>
-      </ion-card-content>
-    </ion-card>
 
-  </ion-content>
-  
+  <ion-item>
+    <ion-label position="floating">
+      <ion-icon name="search-outline"></ion-icon>
+    </ion-label>
+    <ion-input [(ngModel)]="place" inputmode="text" type="text" placeholder="Enter a location.."></ion-input>
+  </ion-item>
+
+  <div id="button">
+    <ion-button (click)="btnGetWeather()" shape="round">Get Weather</ion-button>
+  </div>
+
+  <ion-card *ngIf="city != null">
+    <ion-card-header>
+      <ion-card-subtitle>{{ date }}</ion-card-subtitle>
+      <ion-card-title>{{ city }}{{ ciarka }}{{ region }}{{ ciarka }}{{ country }}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div id="parent">
+        <div id="img"><img src="{{ urlIMG }}" alt=""></div>
+        <div id="space"></div>
+        <div id="text">
+          <p>{{temperature}} {{ temp }} {{ temp_C }} </p>
+          <p>{{humidity_string}} {{ humidity }} {{ percento }}</p>
+          <p>{{wind}} {{ wind_km }} {{ km_h }}</p>
+        </div>
+      </div> 
+      <div id="parent">
+        <div id="img"></div>
+        <div id="space"></div>
+        <div id="text">
+          <p>{{ condition }}</p>
+        </div>
+        <ion-fab vertical="bottom" horizontal="end" *ngIf="temperature != ''">
+          <ion-fab-button (click)="setFavorite()">
+            <ion-icon name="star-outline"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

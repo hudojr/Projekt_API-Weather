@@ -4,6 +4,7 @@ import { StorageService } from '../services/storage.service';
 import { FunctionsService } from '../services/functions.service';
 import { ForecastRecord } from '../models/forecast-record.model';
 
+
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
@@ -19,6 +20,8 @@ export class Tab2Page {
   ciarka: string
 
   forecastdays: any[]
+  hours: any[] = []
+  day: any[] = []
 
   loadingDialog: any
 
@@ -41,6 +44,9 @@ export class Tab2Page {
         this.country = data['location']['country'];
         this.ciarka = ", "
         this.forecastdays = data['forecast']['forecastday'];
+        this.loadHours(data);
+        console.log(this.day);
+        
         //ulozenie city zo subscribe a vstupu days do record-u
         let record = new ForecastRecord(this.city, this.days);
         //funkcia pre ulozenie pola record do localStorage
@@ -50,6 +56,27 @@ export class Tab2Page {
         this.functions.dismiss();
       }
       )
+    }
+  }
+
+  loadHours(data){
+    this.hours = [];
+    this.day = [];
+    for (let index = 0; index < this.forecastdays.length; index++) {
+      const element = data['forecast']['forecastday'][index]['hour'];
+      this.hours.push(element);
+    }
+    for (let index = 0; index < 24; index++) {
+      const element = this.hours[0][index];
+      this.day.push(element)
+    }
+    for (let index = 0; index < 24; index++) {
+      const element = this.hours[1][index];
+      this.day.push(element)
+    }
+    for (let index = 0; index < 24; index++) {
+      const element = this.hours[2][index];
+      this.day.push(element)
     }
   }
   

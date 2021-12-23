@@ -17,7 +17,6 @@ export class StorageService {
     favoriteForecast: ForecastRecord
     favoriteCity: any
 
-
     public getWeatherRecord() {
         return this.weatherHistory;
     }
