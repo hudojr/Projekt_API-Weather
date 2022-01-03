@@ -12,6 +12,15 @@ export class FunctionsService {
 
   constructor(public loadingController: LoadingController, public toastController: ToastController) { }
 
+    //funkcia Toast pre Tab3
+    async presentToastClear() {
+      const toast = await this.toastController.create({
+        message: 'Your favorite locations have been removed.',
+        duration: 1500
+      });
+      toast.present();
+    }
+
   //funkcia Toast pre Tab2
   async presentToastForecast() {
     const toast = await this.toastController.create({
@@ -43,6 +52,7 @@ export class FunctionsService {
 
   //funkcia LoadingDialogu pre Tab1
   async presentLoadingWeather() {
+    await this.dismiss();
     this.loadingDialog = await this.loadingController.create(
       {
         message: 'Loading weather.',

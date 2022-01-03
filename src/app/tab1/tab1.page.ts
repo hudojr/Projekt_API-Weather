@@ -54,7 +54,6 @@ export class Tab1Page {
       this.saveHistory(record);
       this.functions.dismiss();
     }, error => {
-      //ak je error nic sa nevypisuje okrem toho, ze sa zrusi Loading dialog
       this.functions.dismiss();
     }
     );

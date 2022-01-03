@@ -42,7 +42,4 @@ export class StorageService {
         await Storage.remove({ key });
     }
 
-    async clear() {
-        await Storage.clear();
-    }
 }

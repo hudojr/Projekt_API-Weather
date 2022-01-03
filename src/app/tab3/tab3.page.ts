@@ -6,6 +6,8 @@ import { ForecastRecord } from '../models/forecast-record.model';
 import { StorageService } from '../services/storage.service';
 import { WeatherService } from '../api/weather.service';
 
+import { FunctionsService } from '../services/functions.service';
+
 
 @Component({
   selector: 'app-tab3',
@@ -37,7 +39,7 @@ export class Tab3Page {
   percento: String
   ciarka: String
 
-  constructor(private storage: StorageService, private weatherService: WeatherService) {
+  constructor(private storage: StorageService, private weatherService: WeatherService, private functions: FunctionsService) {
     this.getFavorite();
   }
 
@@ -83,6 +85,12 @@ export class Tab3Page {
     this.humidity = data['current']['humidity'];
     this.urlIMG = data['current']['condition']['icon'];
     this.condition = data['current']['condition']['text'];
+  }
+
+  clearFavorite(){
+    this.functions.presentToastClear();
+    this.storage.removeItem('favorite_current');
+    this.storage.removeItem('favorite_forecast');
   }
 
 }

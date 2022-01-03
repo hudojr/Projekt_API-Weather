@@ -12,7 +12,7 @@ import { ForecastRecord } from '../models/forecast-record.model';
 })
 export class Tab2Page {
   place: string
-  days: number
+  days: number = 3
 
   city: string
   region: string
@@ -45,8 +45,6 @@ export class Tab2Page {
         this.ciarka = ", "
         this.forecastdays = data['forecast']['forecastday'];
         this.loadHours(data);
-        console.log(this.day);
-        
         //ulozenie city zo subscribe a vstupu days do record-u
         let record = new ForecastRecord(this.city, this.days);
         //funkcia pre ulozenie pola record do localStorage
@@ -55,7 +53,8 @@ export class Tab2Page {
       }, (error) => {
         this.functions.dismiss();
       }
-      )
+      );
+      this.functions.dismiss();
     }
   }
 
@@ -66,17 +65,11 @@ export class Tab2Page {
       const element = data['forecast']['forecastday'][index]['hour'];
       this.hours.push(element);
     }
-    for (let index = 0; index < 24; index++) {
-      const element = this.hours[0][index];
-      this.day.push(element)
-    }
-    for (let index = 0; index < 24; index++) {
-      const element = this.hours[1][index];
-      this.day.push(element)
-    }
-    for (let index = 0; index < 24; index++) {
-      const element = this.hours[2][index];
-      this.day.push(element)
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 24; j++) {
+        const element = this.hours[i][j];
+        this.day.push(element)
+      }
     }
   }
   
@@ -87,12 +80,11 @@ export class Tab2Page {
     this.storage.setObject('favorite_forecast', this.storage.favoriteForecast); //ulozenie do LocalStorage
     this.functions.presentToastForecast(); //zavolanie toast
   }
-  //funkcia pre getFavorite, ktora sluzi na volanie oblubenych nastaveni ako place a pocet dni
+  //funkcia pre getFavorite, ktora sluzi na volanie oblubeneho prednastavenia place
   getFavorite() {
     this.storage.getObject('favorite_forecast').then((data: any) => {
       if (data != null) {
         this.place = data['city'];
-        this.days = data['days'];
       }
     });
   }

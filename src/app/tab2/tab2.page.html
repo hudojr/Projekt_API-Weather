@@ -23,12 +23,7 @@
 
   <ion-list>
     <ion-item>
-      <ion-label>Days</ion-label>
-      <ion-select [(ngModel)]="days" name="days" placeholder="Select number">
-        <ion-select-option value="1">1</ion-select-option>
-        <ion-select-option value="2">2</ion-select-option>
-        <ion-select-option value="3">3</ion-select-option>
-      </ion-select>
+      <ion-label class="ion-text-center">Forecast is only for 3 days</ion-label>
     </ion-item>
   </ion-list>
 
@@ -105,7 +100,7 @@
 
   <div id="container">
     <ion-button shape="round" (click)="btnGetForecast()">Get Forecast</ion-button>
-    <ion-button id="favorite" shape="round" *ngIf="city != null" (click)="setFavorite()">
+    <ion-button shape="round" *ngIf="city != null" (click)="setFavorite()">
       <ion-icon name="star-outline"></ion-icon>
     </ion-button>
   </div>
