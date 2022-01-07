@@ -25,7 +25,7 @@ export class FunctionsService {
   async presentToastForecast() {
     const toast = await this.toastController.create({
       message: 'Your favorite forecast have been saved.',
-      duration: 2000
+      duration: 1500
     });
     toast.present();
   }
@@ -34,14 +34,13 @@ export class FunctionsService {
   async presentToastWeather() {
     const toast = await this.toastController.create({
       message: 'Your favorite location have been saved.',
-      duration: 2000
+      duration: 1500
     });
     toast.present();
   }
 
   //funkcia LoadingDialogu pre Tab2
   async presentLoadingForecast() {
-    await this.dismiss();
     this.loadingDialog = await this.loadingController.create(
       {
         message: 'Loading forecast.',
@@ -52,7 +51,6 @@ export class FunctionsService {
 
   //funkcia LoadingDialogu pre Tab1
   async presentLoadingWeather() {
-    await this.dismiss();
     this.loadingDialog = await this.loadingController.create(
       {
         message: 'Loading weather.',

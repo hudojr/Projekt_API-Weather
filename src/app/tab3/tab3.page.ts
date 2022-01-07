@@ -64,7 +64,6 @@ export class Tab3Page {
     this.weatherService.getWeather(this.fav).subscribe((data) => {
       //ak request je v poriadku predaju sa data vo funkcii succes
       this.loadData(data);
-
     });
   }
 

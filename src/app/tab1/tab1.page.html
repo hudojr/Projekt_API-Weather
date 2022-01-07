@@ -35,9 +35,11 @@
         <div id="img"><img src="{{ urlIMG }}" alt=""></div>
         <div id="space"></div>
         <div id="text">
-          <p>{{temperature}} {{ temp }} {{ temp_C }} </p>
-          <p>{{humidity_string}} {{ humidity }} {{ percento }}</p>
-          <p>{{wind}} {{ wind_km }} {{ km_h }}</p>
+          <p>Temperature: {{ temp }} °C</p>
+          <p>Feels like: {{ feelstemp }} °C</p>
+          <p>Humidity: {{ humidity }} %</p>
+          <p>Wind: {{ wind_km }} km/h</p>
+          <p>Wind direction: {{ wind_dir }}</p>
         </div>
       </div> 
       <div id="parent">
